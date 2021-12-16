@@ -1,0 +1,31 @@
+---
+# tasks file for server
+
+- name: Install Zabbix Server
+  yum:
+    name: zabbix-server-mysql
+    state: present
+  
+- name: Configure Zabbix Server
+  template:
+    src: zabbix_server.conf.j2
+    dest: /etc/zabbix/zabbix_server.conf
+  notify:
+    - Restart Zabbix Server
+
+
+- name: Start Zabbix Server
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items:
+    - zabbix-server
+    - firewalld
+
+- name: Config Firewalld for Server Port
+  firewalld:
+    port: "{{ server_port }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+

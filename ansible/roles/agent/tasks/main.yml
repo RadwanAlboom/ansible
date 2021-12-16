@@ -1,0 +1,51 @@
+---
+# tasks file for agent
+
+- name: Add Zabbix Repo
+  yum_repository:
+    name: zabbix
+    description: zabbix 4.4
+    baseurl: https://mirrors.aliyun.com/zabbix/zabbix/4.4/rhel/7/x86_64/
+    enabled: yes
+    gpgcheck: no
+
+
+- name: Add Update Repository
+  yum_repository:
+    name: update
+    description: non-supported
+    baseurl: https://mirrors.aliyun.com/zabbix/non-supported/rhel/7/x86_64/
+    enabled: yes
+    gpgcheck: no
+
+
+- name: Install Zabbix Agent
+  yum:
+    name: zabbix-agent
+    state: present
+
+
+- name: Configure Zabbix Agent
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify:
+    - restart zabbix-agent
+
+
+- name: Start Zabbix Agent and Firewalld
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items:
+    - zabbix-agent
+    - firewalld
+
+
+- name: config firewalld
+  firewalld:
+    port: "{{ agent_port }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+

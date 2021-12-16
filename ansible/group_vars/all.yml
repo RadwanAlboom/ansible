@@ -1,0 +1,12 @@
+---
+
+ansible_password: "osboxes.org"
+ansible_become_pass: "osboxes.org"
+db_user: "zabbixuser"
+db_user_password: "12345"
+db_name: "zabbixdb"
+db_host: "localhost"
+server_ip: "192.168.43.62"
+server_hostname: "servermachine"
+server_port: "10051"
+agent_port: "10050"

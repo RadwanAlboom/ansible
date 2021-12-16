@@ -1,0 +1,53 @@
+---
+# tasks file for db
+
+- name: Install Mariadb Server & PyMySQL
+  yum:
+    name: mariadb-server,MySQL-python
+    state: latest
+
+- name: Start and Enable Mariadb Server
+  service:
+    name: mariadb
+    enabled: true
+    state: started
+
+- name: Start Firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Create a DB User
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_user_password }}"
+    priv: '*.*:ALL'
+    state: present
+
+
+- name: Copy DB Schema to Server
+  copy:
+    src: mysql/create_db.sql
+    dest: /var/tmp
+
+
+- name: Create Zabbix DB
+  mysql_db:
+    name: "{{ db_name }}"
+    collation: utf8_bin
+    encoding: utf8
+    target: /var/tmp/create_db.sql
+    state: import
+  failed_when: false
+
+
+
+
+- name: Config Firewalld for MySQL Service
+  firewalld:
+    service: mysql
+    permanent: yes
+    immediate: yes
+    state: enabled
+

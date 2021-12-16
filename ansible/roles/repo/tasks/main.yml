@@ -1,0 +1,32 @@
+---
+# tasks file for repo
+
+- name: Add Zabbix Repo
+  yum_repository:
+    name: zabbix
+    description: zabbix 4.4
+    baseurl: https://mirrors.aliyun.com/zabbix/zabbix/4.4/rhel/7/x86_64/
+    enabled: yes
+    gpgcheck: no
+
+
+- name: Add Update Repository
+  yum_repository:
+    name: update
+    description: non-supported
+    baseurl: https://mirrors.aliyun.com/zabbix/non-supported/rhel/7/x86_64/
+    enabled: yes
+    gpgcheck: no
+
+- name: Install HTTPD Server
+  yum:
+    name: httpd
+    state: latest
+
+
+- name: Start and Enable HTTPD Server
+  service:
+    name: httpd
+    enabled: true
+    state: started
+
