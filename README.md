@@ -16,6 +16,19 @@ sudo vi /etc/hostname
 sudo /etc/hosts
 ```
 
+- hostname on controller machine after editing hostname file
+```
+ansiblecontroller
+```
+- hosts list on controller after editing hosts file
+```
+127.0.0.1   localhost ansiblecontroller
+::1         localhost ansiblecontroller
+192.168.43.62  servermachine
+192.168.43.78  clientmachine
+192.168.43.167  controllermachine
+```
+
 -   Generate ssh key on controller machine
 
 ```
