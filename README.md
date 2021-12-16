@@ -88,7 +88,7 @@ sudo shutdown -r now
 -   First clone repository for the above ansible code.
 
 ```
-git clone
+git clone https://github.com/RadwanAlboom/ansible.git
 ```
 
 -   Run asible palybook.
